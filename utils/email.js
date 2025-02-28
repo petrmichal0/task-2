@@ -55,9 +55,11 @@ const sendPasswordResetEmail = async (user, resetURL) => {
 
     const htmlContent = `
       <p>Ahoj ${firstName},</p>
-      <p>Požádali jste o resetování hesla. Klikněte na odkaz níže a nastavte si nové heslo:</p>
+      <p>požádali jste o resetování hesla. Klikněte na odkaz níže a nastavte si nové heslo:</p>
       <p><a href="${resetURL}">Resetovat heslo</a></p>
       <p>Pokud jste o reset hesla nežádali, tento e-mail ignorujte.</p>
+      <br>
+      <p>Tým Book Finder</p>
     `;
 
     await sendEmail(
