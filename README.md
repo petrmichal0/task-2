@@ -67,8 +67,16 @@ Book Finder je backend aplikace napsaná v Node.js, která umožňuje vyhledáv�
    Přidejte následující proměnné do vašeho souboru `.env`. 
 
     ```env
-    NODE_ENV=development
-    PORT=3020
+    JWT_SECRET=your_secret_key
+    JWT_EXPIRES_IN=1h
+
+    EMAIL_FROM="your_email@example.com"
+    EMAIL_PASSWORD="your_email_password"
+    EMAIL_HOST=smtp.your-email-provider.com
+    EMAIL_PORT=465
+    
+    NODE_ENV=production
+    BASE_URL=http://localhost:3020
     ```
 
 3. **Zabezpečení souboru:**
