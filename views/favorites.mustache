@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oblíbené knihy</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Moje oblíbené knihy</h1>
+    <nav>
+      <a href="/">Domů</a>
+      <button id="logoutButton" class="logout-link">Odhlásit se</button>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="book-list">
+      {{#favorites}}
+        <div class="book-item">
+          <img src="{{thumbnail}}" alt="Book cover" />
+          <div class="book-info">
+            <h3>{{title}}</h3>
+            <p><strong>Autor:</strong> {{author}}</p>
+            <p><strong>Vydáno:</strong> {{publishedDate}}</p>
+            <p class="book-description"><strong>Popis:</strong> {{description}}</p>
+
+            <span 
+              class="favorite-icon" 
+              data-title="{{title}}" 
+              data-author="{{author}}" 
+              data-publishedDate="{{publishedDate}}"
+              data-description="{{description}}"
+              data-thumbnail="{{thumbnail}}"
+              onclick="toggleFavorite(this)"
+            >
+              <span class="favorite-active">❤️</span>
+            </span>
+          </div>
+        </div>
+      {{/favorites}}
+
+      {{^favorites}}
+        <p>Nemáte žádné oblíbené knihy.</p>
+      {{/favorites}}
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Book Finder</p>
+  </footer>
+
+  <script>
+    async function toggleFavorite(element) {
+      const title = element.getAttribute("data-title");
+      const author = element.getAttribute("data-author");
+      const publishedDate = element.getAttribute("data-publishedDate") || "N/A";
+      const description = element.getAttribute("data-description") || "No description available";
+      const thumbnail = element.getAttribute("data-thumbnail") || "";
+
+      try {
+        const response = await fetch("/favorites/toggle", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ title, author, publishedDate, description, thumbnail }),
+        });
+
+         if (!response.ok) {
+          const errorText = await response.text();
+          alert(`❌ Chyba: ${errorText}`);
+          return;
+        }
+
+        const result = await response.json();
+
+        if (!result.favorites.some(book => book.title === title && book.author === author)) {
+          element
+           alert("✅ Kniha byla odebrána z oblíbených.");
+           element.closest(".book-item").remove();
+        } else {
+          alert("✅ Kniha byla přidána do oblíbených.");
+        }
+
+      } catch (error) {
+        console.error("❌ Chyba při přepínání oblíbených:", error);
+         alert("❌ Nastala chyba při zpracování požadavku.");
+      }
+    }
+
+    document.querySelector("#logoutButton")?.addEventListener("click", async function () {
+        const response = await fetch("/auth/logout", { method: "GET" });
+
+        if (response.ok) {
+            alert("✅ Odhlášení bylo úspěšné.");
+            window.location.href = "/auth/login";
+        } else {
+            alert("❌ Chyba při odhlašování.");
+        }
+    });
+  </script>
+
+</body>
+</html>

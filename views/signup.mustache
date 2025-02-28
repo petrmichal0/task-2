@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrace</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header>
+    <h1>Vytvořit účet</h1>
+    <nav>
+      {{#user}}
+        <span>Přihlášen jako: <strong>{{user.name}}</strong></span>
+        <button id="logoutButton" class="logout-link">Odhlásit se</button>
+      {{/user}}
+
+      {{^user}}
+        <a href="/">Domů</a>
+        <a href="/auth/login">Přihlásit se</a>
+      {{/user}}  
+    </nav>
+</header>
+
+<div class="container">
+    {{#error}}
+      <p class="error-message">{{error}}</p>
+    {{/error}}
+
+    <form id="signupForm">
+        <div class="form-group">
+            <input type="text" id="name" name="name" placeholder="Zadejte celé jméno" required>
+        </div>
+
+        <div class="form-group">
+            <input type="email" id="email" name="email" placeholder="Zadejte e-mail" required>
+        </div>
+
+        <div class="form-group">
+            <input type="password" id="password" name="password" placeholder="Vytvořte heslo" required>
+        </div>
+
+        <div class="form-group">
+            <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="Zadejte heslo znovu" required>
+        </div>
+
+        <button type="submit">Registrovat</button>
+    </form>
+</div>
+
+<footer>
+    <p>&copy; 2025 Book Finder</p>
+</footer>
+
+<script>
+    document.getElementById("signupForm").addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const passwordConfirm = document.getElementById("passwordConfirm").value.trim();
+
+        if (!name) {
+            alert("⚠️ Zadejte celé jméno.");
+            return;
+        }
+
+        if (!email || !email.includes("@") || !email.includes(".")) {
+            alert("⚠️ Zadejte platný e-mail.");
+            return;
+        }
+
+        if (password.length < 6) {
+            alert("⚠️ Heslo musí mít alespoň 6 znaků.");
+            return;
+        }
+
+        if (password !== passwordConfirm) {
+            alert("❌ Hesla se neshodují.");
+            return;
+        }
+
+        try {
+            const response = await fetch("/auth/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, password, passwordConfirm }),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || "Registrace selhala.");
+            }
+
+            alert("✅ Registrace úspěšná! Přesměrování...");
+            window.location.href = "/";
+
+        } catch (err) {
+            alert("❌ Došlo k neočekávané chybě. Zkuste to znovu.");
+            console.error("Chyba registrace:", err);
+        }
+    });
+
+    
+</script>
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Finder</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>{{#user}} {{user.name}}, {{/user}}vítejte v Book Finder</h1>
+    <nav>
+      {{#user}}
+        <a href="/favorites">Oblíbené knihy</a>
+        <button id="logoutButton" class="logout-link">Odhlásit se</button>
+      {{/user}}
+
+      {{^user}}
+        <a href="/auth/login">Přihlásit se</a>
+        <a href="/auth/signup">Zaregistrovat se</a>
+      {{/user}}
+    </nav>
+  </header>
+
+  <div class="container">
+    <form id="search-container" method="GET" action="/books/search">
+    <div class="form-group">
+      <input type="text" name="query" placeholder="Vyhledat knihu..." required />
+    </div>
+      <button type="submit">Hledat</button>
+    </form>
+
+    {{#error}}
+      <p class="error-message">{{error}}</p>
+    {{/error}}
+
+    <div class="book-list">
+      {{#books}}
+        <div class="book-item">
+          <img src="{{thumbnail}}" alt="Book cover" />
+          <div class="book-info">
+            <h3>{{title}}</h3>
+            <p><strong>Autor:</strong> {{author}}</p>
+            <p><strong>Vydáno:</strong> {{publishedDate}}</p>
+            <p class="book-description"><strong>Popis:</strong> {{description}}</p>
+            
+            {{#user}}
+              <span 
+    class="favorite-icon" 
+    data-title="{{title}}" 
+    data-author="{{author}}" 
+    data-publishedDate="{{publishedDate}}"
+    data-description="{{description}}"
+    data-thumbnail="{{thumbnail}}"
+    onclick="toggleFavorite(this)"
+>
+    <span class="favorite-active" style="{{^favorite}}display:none;{{/favorite}}">❤️</span>
+    <span class="favorite-inactive" style="{{#favorite}}display:none;{{/favorite}}">🤍</span>
+</span>
+            {{/user}}
+          </div>
+        </div>
+      {{/books}}
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Book Finder</p>
+  </footer>
+
+<script>
+    async function toggleFavorite(element) {
+        const title = element.getAttribute("data-title");
+        const author = element.getAttribute("data-author");
+        const publishedDate = element.getAttribute("data-publishedDate") || "N/A";
+        const description = element.getAttribute("data-description") || "No description available";
+        const thumbnail = element.getAttribute("data-thumbnail") || "";
+
+        try {
+            const response = await fetch("/favorites/toggle", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ title, author, publishedDate, description, thumbnail }),
+            });
+
+            if (!response.ok) {
+          alert("❌ Neautorizovaný přístup. Přihlaste se prosím.");
+          return;
+        }
+
+            const result = await response.json();
+
+            const isFavorite = result.favorites.some(
+                (book) => book.title === title && book.author === author
+            );
+
+            const activeHeart = element.querySelector(".favorite-active");
+            const inactiveHeart = element.querySelector(".favorite-inactive");
+
+            if (isFavorite) {
+                activeHeart.style.display = "inline";
+                inactiveHeart.style.display = "none";
+                alert(`✅ Přidáno do oblíbených: "${title}"`);
+            } else {
+                activeHeart.style.display = "none";
+                inactiveHeart.style.display = "inline";
+                alert(`❌ Odebráno z oblíbených: "${title}"`);
+            }
+
+            
+        } catch (error) {
+            alert("❌ Nastala chyba při ukládání do oblíbených.");
+        }
+    }
+
+    document.querySelector("#logoutButton")?.addEventListener("click", async function () {
+        const response = await fetch("/auth/logout", { method: "GET" });
+
+        if (response.ok) {
+            alert("✅ Odhlášení bylo úspěšné.");
+            window.location.href = "/auth/login";
+        } else {
+            alert("❌ Chyba při odhlašování.");
+        }
+    });
+</script>
+
+</body>
+</html>

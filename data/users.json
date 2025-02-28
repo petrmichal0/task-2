@@ -1,0 +1,24 @@
+[
+  {
+    "id": "e0fb0eb0-8ff6-455a-8366-4efdf7d9fb66",
+    "name": "Petr",
+    "email": "petr@petr.com",
+    "password": "$2b$10$x15q.YPzHLBq12AyyYbiHeQgSEkMBx31V35uSVBlBWdb5DKYSYxxe",
+    "passwordResetToken": "31274ebf32c2b81693554df42baf3ab727f00bc7b943a0a0abd5d01fc543b579",
+    "passwordResetExpires": 1740325140692
+  },
+  {
+    "id": "6ed2725f-3da6-44ac-a5fd-89a1d2d9b3b3",
+    "name": "Test Petr",
+    "email": "test@test.com",
+    "password": "$2b$10$p6FYCpYwNaCiX/Afo7LZpecgdvp2xPBBPn37vLFRcUeyfrOl03x8S",
+    "passwordResetToken": "657b11231c0061231c7b82ac85e9642b083887bb9f0c942e370e5654c2bf8cd4",
+    "passwordResetExpires": 1740319388127
+  },
+  {
+    "id": "17b6ae0b-87a3-4bd9-816c-734c57933af4",
+    "name": "Petr Michal",
+    "email": "petrmichal0@email.cz",
+    "password": "$2b$10$lT909b8QOvoFR.1lKANiWOfVsx0OBWGUz3KkVPIk8.yPFEh.M2s3a"
+  }
+]

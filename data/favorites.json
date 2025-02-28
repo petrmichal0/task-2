@@ -1,0 +1,28 @@
+{
+  "petrmichal0@email.cz": [
+    {
+      "title": "Harry Potter – kompletní kolekce (1-7)",
+      "author": "J.K. Rowling",
+      "publishedDate": "2016-08-30",
+      "description": "Když je Harry Potter jako malé dítě zanechán na prahu dveří, netuší, že je chlapec, který přežil, ani že je slavný v celém kouzelnickém světě. O mnoho let později s údivem obdrží dopis s přijetím do B...",
+      "thumbnail": "http://books.google.com/books/content?id=q67bDAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "favorite": true
+    },
+    {
+      "title": "Harry Potter a Tajemná komnata",
+      "author": "J.K. Rowling",
+      "publishedDate": "2016-08-30",
+      "description": "„Může za to spiknutí, Harry Pottere. Spiknutí, při kterém se ve Škole čar a kouzel v Bradavicích mají letos stát ty nejhroznější věci.“ Harry Potter v létě zažil své nehorší narozeniny, vyslechl si dě...",
+      "thumbnail": "http://books.google.com/books/content?id=Xq3bDAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "favorite": true
+    },
+    {
+      "title": "Harry Potter a Fénixův řád",
+      "author": "J.K. Rowling",
+      "publishedDate": "2016-08-30",
+      "description": "„Sdílíte s Pánem zla jeho myšlenky a pocity. Podle ředitele není vhodné, aby tomu tak bylo i nadále. Chce, abych vás naučil, jak před Pánem zla svou mysl uzavřít.“ V Bradavicích nastaly temné časy. Po...",
+      "thumbnail": "http://books.google.com/books/content?id=8q3bDAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "favorite": true
+    }
+  ]
+}

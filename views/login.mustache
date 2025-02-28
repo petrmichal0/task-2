@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Přihlášení</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Přihlášení</h1>
+    <nav>
+      {{#user}}
+        <span>Přihlášen jako: <strong>{{user.name}}</strong></span>
+        <button id="logoutButton">Odhlásit se</button>
+      {{/user}}
+
+      {{^user}}
+        <a href="/">Domů</a>
+        <a href="/auth/signup">Zaregistrovat se</a>
+        <a href="/auth/forgot-password">Reset hesla</a>
+      {{/user}}  
+    </nav>
+  </header>
+  <div class="container">
+    {{#error}}
+    <p class="error-message">{{error}}</p>
+    {{/error}}
+
+    <form id="loginForm">
+      <input type="email" id="email" name="email" placeholder="Zadejte e-mail" required />
+      <input type="password" id="password" name="password" placeholder="Zadejte heslo" required />
+      <button type="submit">Přihlásit se</button>
+    </form>
+  </div>
+   <footer>
+    <p>&copy; 2025 Book Finder</p>
+  </footer>
+
+  <script>
+    document.querySelector("#loginForm").addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const email = document.querySelector("#email").value;
+      const password = document.querySelector("#password").value;
+
+       if (!email || !password) {
+        alert("⚠️ Vyplňte všechny údaje pro přihlášení.");
+        return;
+      }
+
+      try {
+        const response = await fetch("/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+          credentials: "include",
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          if (response.status === 400) {
+            alert("❌ Neplatné přihlašovací údaje.");
+          } else {
+            alert("❌ Serverová chyba. Zkuste to znovu.");
+          }
+          return;
+        }
+
+        alert("✅ Přihlášení úspěšné! Přesměrování...");
+        window.location.href = "/";
+
+      } catch (error) {
+        alert("❌ Nastala neočekávaná chyba. Zkuste to znovu.");
+      }
+    });
+  </script>
+</body>
+</html>
